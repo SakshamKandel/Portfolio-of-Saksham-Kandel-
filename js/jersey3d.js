@@ -5,12 +5,15 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 const container = document.getElementById('jersey-3d-container');
 
 if (container) {
+    // Clear the "Run Server" message since JS is running
+    container.innerHTML = '';
+
     // 1. Scene
     const scene = new THREE.Scene();
 
     // 2. Camera - Neutral Eye Level
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.set(0, 0, 6.5); // Back to neutral Y, zoomed out slightly to see bottom
+    camera.position.set(0, 0, 8.5); // Moved back to fit the jersey better
 
     // 3. Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -53,27 +56,32 @@ if (container) {
             model = gltf.scene;
             scene.remove(placeholder);
 
-            // Auto-scale logic
+            // Calculate Bounding Box
             const box = new THREE.Box3().setFromObject(model);
             const size = box.getSize(new THREE.Vector3());
             const center = box.getCenter(new THREE.Vector3());
 
-            // Zero centering
+            // Center Model at Origin
             model.position.x += (model.position.x - center.x);
             model.position.y += (model.position.y - center.y);
             model.position.z += (model.position.z - center.z);
 
-            // Scale Adjustment - Side Layout
+            // Robust Auto-Scaling
             const maxDim = Math.max(size.x, size.y, size.z);
-            const scaleFactor = 3.2 / maxDim;
+            let scaleFactor = 3.5 / maxDim;
+
+            // Safety check for bad bounding box
+            if (!isFinite(scaleFactor) || scaleFactor === 0) {
+                scaleFactor = 1.0;
+            }
             model.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
-            // Position Adjustment - Centered in Left 50%
+            // Positioning for Left Column
             model.position.x = 0;
-            model.position.y = -0.5;
+            model.position.y = -0.3; // Slightly lower than center
 
             scene.add(model);
-            console.log("Jersey Loaded Successfully");
+            console.log("Jersey Loaded & Added. Scale:", scaleFactor);
         },
         (xhr) => {
             // progress
