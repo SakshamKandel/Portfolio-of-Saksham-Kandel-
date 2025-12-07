@@ -8,9 +8,9 @@ if (container) {
     // 1. Scene
     const scene = new THREE.Scene();
 
-    // 2. Camera - Follow the lowered model
+    // 2. Camera - Positioned to see full jersey
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.set(0, -0.8, 5); // Camera looks lower and closer
+    camera.position.set(0, -0.5, 5.5); // Balanced view
 
     // 3. Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -63,14 +63,14 @@ if (container) {
             model.position.y += (model.position.y - center.y);
             model.position.z += (model.position.z - center.z);
 
-            // Scale Adjustment - LARGER to fill space
+            // Scale Adjustment - Balanced
             const maxDim = Math.max(size.x, size.y, size.z);
-            const scaleFactor = 4.0 / maxDim; // Bigger to reduce empty space
+            const scaleFactor = 3.8 / maxDim; // Balanced for full view
             model.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
-            // Position Adjustment - Clear title completely
+            // Position Adjustment - Show full jersey
             model.position.x = 0;   // Dead center X
-            model.position.y = -1.8; // Much lower to avoid title overlap
+            model.position.y = -1.3; // Balanced to see collar and fit below title
 
             scene.add(model);
             console.log("Jersey Loaded Correctly");
