@@ -57,26 +57,6 @@ if (container) {
             const box = new THREE.Box3().setFromObject(model);
             const size = box.getSize(new THREE.Vector3());
             const center = box.getCenter(new THREE.Vector3());
-
-            // Zero centering
-            model.position.x += (model.position.x - center.x);
-            model.position.y += (model.position.y - center.y);
-            model.position.z += (model.position.z - center.z);
-
-            // Scale Adjustment
-            const maxDim = Math.max(size.x, size.y, size.z);
-            const scaleFactor = 3.0 / maxDim; // Smaller scale (was 3.5)
-            model.scale.set(scaleFactor, scaleFactor, scaleFactor);
-
-            // Position Adjustment
-            model.position.x = 0;   // Dead center X
-            model.position.y = -0.8; // Lower Y to fit text above
-
-            scene.add(model);
-            console.log("Jersey Loaded Correctly");
-        },
-        (xhr) => {
-            // loading progress
         },
         (error) => {
             console.error('An error occurred:', error);
