@@ -118,7 +118,7 @@ if (container) {
 
         if (isMobile) {
             // Mobile
-            const scaleFactor = 5.5 / maxDim; // Bigger for mobile
+            const scaleFactor = 6.4 / maxDim; // Increased by 15%
             jerseyGroup.scale.set(scaleFactor, scaleFactor, scaleFactor);
             // Center roughly
             jerseyGroup.position.set(0, 0.0, 0); // Moved up to valid overlap
