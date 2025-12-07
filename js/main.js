@@ -1,11 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // Loader
+    // Loader
     const loader = document.getElementById('loader');
-    setTimeout(() => {
-        loader.style.opacity = '0';
-        setTimeout(() => loader.remove(), 500);
-    }, 1000);
+    const counter = document.querySelector('.loader-counter');
+
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += Math.floor(Math.random() * 5) + 1; // Random increment
+        if (progress > 100) progress = 100;
+
+        if (counter) counter.textContent = progress;
+
+        if (progress === 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.remove(), 500);
+            }, 200);
+        }
+    }, 30);
 
     // Asset Configuration
     const assets = {

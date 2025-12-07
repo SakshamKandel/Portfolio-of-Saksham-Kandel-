@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saksham Kandel | Lead Sports Designer</title>
+    <title>Saksham Kandel | Sports Designer</title>
     <meta name="description"
-        content="Portfolio of Saksham Kandel, a Lead Sports Designer specializing in high-impact visual identities for premier teams like Biratnagar Kings and Karnali Yaks.">
+        content="Portfolio of Saksham Kandel, a Sports Designer specializing in high-impact visual identities for premier teams like Biratnagar Kings and Karnali Yaks.">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,6 +28,7 @@
             color: white;
             font-family: 'Outfit', sans-serif;
             overflow-x: hidden;
+            width: 100%;
         }
 
         #loader {
@@ -36,15 +37,19 @@
             background: #000;
             z-index: 9999;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: flex-end;
+            justify-content: flex-end;
+            padding: 40px;
+            box-sizing: border-box;
             transition: opacity 0.5s ease;
         }
 
-        .loader-text {
-            font-size: 2rem;
+        .loader-counter {
+            font-size: 15vw;
             font-weight: 800;
-            letter-spacing: 2px;
+            font-family: monospace;
+            line-height: 0.8;
+            color: #fff;
         }
     </style>
 </head>
@@ -53,7 +58,7 @@
 
     <!-- Loading Screen -->
     <div id="loader">
-        <div class="loader-text">SAKSHAM</div>
+        <div class="loader-counter">0</div>
     </div>
 
     <!-- Navigation -->
@@ -69,12 +74,12 @@
     <!-- Hero Section -->
     <header class="hero">
         <div class="hero-content">
-            <h1 class="hero-title" data-scroll>Lead Sports <br><span class="highlight">Designer</span></h1>
+            <h1 class="hero-title" data-scroll>Sports <br><span class="highlight">Designer</span></h1>
             <p class="hero-subtitle">Visualizing Victory for Premier Leagues</p>
-            <div class="scroll-ind">
-                <span>Scroll</span>
-                <i class="fa-solid fa-arrow-down"></i>
-            </div>
+        </div>
+        <div class="scroll-ind">
+            <span>Scroll</span>
+            <i class="fa-solid fa-arrow-down"></i>
         </div>
         <div class="hero-image-container">
             <!-- Will be populated dynamically with My Photo -->
@@ -163,6 +168,7 @@
                         <h4>Lead Designer</h4>
                         <p>Biratnagar Kings</p>
                     </div>
+                    <span class="job-meta">Nepal • On-site</span>
                 </div>
                 <div class="job-item">
                     <span class="year">Present</span>
@@ -170,6 +176,7 @@
                         <h4>Lead Designer</h4>
                         <p>Karnali Yaks</p>
                     </div>
+                    <span class="job-meta">Nepal • Remote</span>
                 </div>
                 <div class="job-item">
                     <span class="year">2025</span>
@@ -177,6 +184,7 @@
                         <h4>Visual Designer</h4>
                         <p>ASINIFY</p>
                     </div>
+                    <span class="job-meta">Remote • Contract</span>
                 </div>
             </div>
         </div>
@@ -186,7 +194,7 @@
     <footer id="contact">
         <div class="footer-content">
             <h2>Let's Work Together</h2>
-            <a href="mailto:contact@sakshamkandel.com" class="email-link">Get in Touch</a>
+            <a href="mailto:officialsakshamkandel@gmail.com" class="email-link">Get in Touch</a>
             <div class="socials">
                 <a href="https://www.linkedin.com/in/sakshamkandel/" target="_blank">LinkedIn</a>
                 <a href="https://www.instagram.com/thesaks_/" target="_blank">Instagram</a>

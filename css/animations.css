@@ -188,14 +188,7 @@ section.visible {
     }
 }
 
-#loader .loader-text {
-    background: linear-gradient(90deg, #fff 0%, #FFD700 50%, #fff 100%);
-    background-size: 1000px 100%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shimmer 2s infinite linear;
-}
+/* Marker for previous loader styles - removed */
 
 /* 4K Media Query Enhancements */
 @media (min-width: 2560px) {
