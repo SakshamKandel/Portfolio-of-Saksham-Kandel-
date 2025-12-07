@@ -8,9 +8,9 @@ if (container) {
     // 1. Scene
     const scene = new THREE.Scene();
 
-    // 2. Camera
+    // 2. Camera - Pulled back for better full view
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.set(0, 0, 5); // Start back
+    camera.position.set(0, 0, 7); // Increased from 5 to 7 to zoom out
 
     // 3. Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -59,39 +59,21 @@ if (container) {
             const center = box.getCenter(new THREE.Vector3());
 
             // Center model
-            model.position.x += (model.position.x - center.x);
-            model.position.y += (model.position.y - center.y);
-            model.position.z += (model.position.z - center.z);
+            (error) => {
+                console.error('An error occurred:', error);
 
-            // Logic: Make longest side = 3.5 units
-            const maxDim = Math.max(size.x, size.y, size.z);
-            const scaleFactor = 3.5 / maxDim;
-            model.scale.set(scaleFactor, scaleFactor, scaleFactor);
-
-            // Final manual adjustment
-            model.position.y = -0.3; // Sits slightly lower
-
-            scene.add(model);
-            console.log("Jersey Loaded", scaleFactor);
-        },
-        (xhr) => {
-            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-        },
-        (error) => {
-            console.error('An error occurred:', error);
-
-            // Show error on screen so user knows what to do
-            const errorDiv = document.createElement('div');
-            errorDiv.style.position = 'absolute';
-            errorDiv.style.top = '50%';
-            errorDiv.style.left = '50%';
-            errorDiv.style.transform = 'translate(-50%, -50%)';
-            errorDiv.style.color = 'red';
-            errorDiv.style.textAlign = 'center';
-            errorDiv.style.background = 'rgba(0,0,0,0.8)';
-            errorDiv.style.padding = '20px';
-            errorDiv.style.zIndex = '100';
-            errorDiv.innerHTML = `
+                // Show error on screen so user knows what to do
+                const errorDiv = document.createElement('div');
+                errorDiv.style.position = 'absolute';
+                errorDiv.style.top = '50%';
+                errorDiv.style.left = '50%';
+                errorDiv.style.transform = 'translate(-50%, -50%)';
+                errorDiv.style.color = 'red';
+                errorDiv.style.textAlign = 'center';
+                errorDiv.style.background = 'rgba(0,0,0,0.8)';
+                errorDiv.style.padding = '20px';
+                errorDiv.style.zIndex = '100';
+                errorDiv.innerHTML = `
                 <h3 style="margin-top:0">⚠️ 3D Model Blocked by Browser</h3>
                 <p>Browsers do not allow 3D files to load directly from your computer for security.</p>
                 <div style="background: #333; padding: 10px; margin: 10px 0; border-radius: 5px; text-align: left;">
@@ -103,8 +85,8 @@ if (container) {
                 </div>
                 <p style="font-size: 0.9em; opacity: 0.8;">(I have verified you have Python installed, so this will work!)</p>
             `;
-            container.appendChild(errorDiv);
-        }
+                container.appendChild(errorDiv);
+            }
     );
 
     // 6. Animation
