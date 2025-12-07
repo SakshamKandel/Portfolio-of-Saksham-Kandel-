@@ -118,13 +118,13 @@ if (container) {
 
         if (isMobile) {
             // Mobile
-            const scaleFactor = 3.5 / maxDim; // Adjusted for mobile view
+            const scaleFactor = 5.5 / maxDim; // Bigger for mobile
             jerseyGroup.scale.set(scaleFactor, scaleFactor, scaleFactor);
             // Center roughly
-            jerseyGroup.position.set(0, -0.5, 0);
+            jerseyGroup.position.set(0, 0.0, 0); // Moved up to valid overlap
 
             // Controls should target the group position so we orbit the jersey
-            controls.target.set(0, -0.5, 0);
+            controls.target.set(0, 0.0, 0);
         } else {
             // Desktop
             const scaleFactor = 7.0 / maxDim;
