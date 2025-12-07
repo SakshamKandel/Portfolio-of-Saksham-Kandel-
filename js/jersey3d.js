@@ -20,19 +20,19 @@ if (container) {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap pixel ratio for performance
     container.appendChild(renderer.domElement);
 
-    // Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5); // Soft white light
+    // Lights - Increased Intensity for Better Visibility
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.5);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 4);
     directionalLight.position.set(2, 2, 5);
     scene.add(directionalLight);
 
-    const rimLight = new THREE.PointLight(0x00FFFF, 3); // Cyan rim light (Yaks theme)
+    const rimLight = new THREE.PointLight(0x00FFFF, 5);
     rimLight.position.set(-5, 0, -5);
     scene.add(rimLight);
 
-    const goldLight = new THREE.PointLight(0xFFD700, 2); // Gold rim light (Kings theme)
+    const goldLight = new THREE.PointLight(0xFFD700, 5);
     goldLight.position.set(5, 0, -5);
     scene.add(goldLight);
 
@@ -57,24 +57,16 @@ if (container) {
             model.position.z += (model.position.z - center.z);
 
             // Scale to fit nice on screen
-            // Logic: if it's too big, scale down. Target ~3 units height
             const maxDim = Math.max(size.x, size.y, size.z);
-            const scale = 3.5 / maxDim; // Adjust 3.5 for size preference
-            model.scale.set(scale, scale, scale);
+            let scaleFactor = 4.0 / maxDim;
+            model.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
-            // Initial Position - Centered since it's in its own section now
+            // Centered Position
             model.position.x = 0;
             model.position.y = -0.5;
 
-            // if (window.innerWidth > 768) {
-            //      model.position.x = 1.5; // Offset right on desktop
-            // } else {
-            //      model.position.x = 0;   // Center on mobile
-            //      model.position.y = -0.5; // Lower slightly
-            // }
-
             scene.add(model);
-            console.log("3D Model Loaded!");
+            console.log("3D Model Loaded Successfully!");
         },
         undefined,
         (error) => {
@@ -83,8 +75,6 @@ if (container) {
     );
 
     // Animation Loop
-    let targetRotation = 0;
-
     function animate() {
         requestAnimationFrame(animate);
 
@@ -93,18 +83,11 @@ if (container) {
             // Base rotation (idle)
             model.rotation.y += 0.002;
 
-            // Scroll influence
+            // Scroll influence - only when visible in viewport ideally, but global scroll works for now
             const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
 
-            // We want it to spin faster or to a specific angle based on scroll ?
-            // Let's make it rotate based on scroll
-
-            // Example: Rotate 360 degrees (2*PI) over the length of the page
-            // Or just add scroll delta. Let's try direct mapping + idle spin
-
-            // Override idle spin with scroll control?
-            // Let's do: Position = Scroll * Factor
-            model.rotation.y = scrollPercent * Math.PI * 4 + 0.5; // 2 full spins over page
+            // Interaction: Spin based on scroll
+            model.rotation.y = scrollPercent * Math.PI * 4 + 0.5;
         }
 
         renderer.render(scene, camera);
