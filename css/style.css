@@ -853,6 +853,9 @@ footer h2 {
         width: 100%;
         height: 50vh;
         /* Jersey takes top half */
+        min-height: 400px;
+        /* Ensure visibility */
+        flex-shrink: 0;
         overflow: hidden;
         /* Prevent canvas from bleeding */
     }
