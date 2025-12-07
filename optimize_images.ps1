@@ -19,22 +19,23 @@ foreach ($folder in $sourceRoots) {
         $files = Get-ChildItem -Path $folder -Include *.png, *.jpg, *.jpeg -Recurse
         
         foreach ($file in $files) {
+            if ($file.PSIsContainer) { continue }
             Write-Host "Processing: $($file.Name)"
             
             # 1. Backup
-            Copy-Item $file.FullName -Destination $backupDest -Force
+            Copy-Item -LiteralPath $file.FullName -Destination $backupDest -Force
             
             try {
                 # 2. Optimize
                 $img = [System.Drawing.Image]::FromFile($file.FullName)
                 
-                # Calculate new dimensions (Max width 1920)
+                # Calculate new dimensions (Max width 800 - Sufficient for Grid View)
                 $newWidth = $img.Width
                 $newHeight = $img.Height
                 
-                if ($img.Width -gt 1920) {
-                    $scale = 1920 / $img.Width
-                    $newWidth = 1920
+                if ($img.Width -gt 800) {
+                    $scale = 800 / $img.Width
+                    $newWidth = 800
                     $newHeight = [int]($img.Height * $scale)
                 }
                 
@@ -52,17 +53,21 @@ foreach ($folder in $sourceRoots) {
                 $encoderParams.Param[0] = New-Object System.Drawing.Imaging.EncoderParameter($encoder, 85) # Quality 85
                 $jpegCodec = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object { $_.MimeType -eq 'image/jpeg' }
                 
-                # Save as new .jpg
+                # Save as new .jpg to TEMP path first to avoid file lock
                 $newName = [System.IO.Path]::ChangeExtension($file.FullName, ".jpg")
-                $bmp.Save($newName, $jpegCodec, $encoderParams)
+                $tempName = $newName + ".tmp"
+                $bmp.Save($tempName, $jpegCodec, $encoderParams)
                 
                 $img.Dispose()
                 $bmp.Dispose()
                 $graph.Dispose()
                 
-                # If original was not jpg, or name changed, delete original (it is backed up)
+                # Move temp to final
+                Move-Item -LiteralPath $tempName -Destination $newName -Force
+
+                # If original was a different name (e.g. png), delete it
                 if ($file.FullName -ne $newName) {
-                    Remove-Item $file.FullName -Force
+                    Remove-Item -LiteralPath $file.FullName -Force
                 }
                 
                 Write-Host "Optimized: $newName"
