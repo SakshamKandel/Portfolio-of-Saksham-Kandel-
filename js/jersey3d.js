@@ -68,7 +68,7 @@ if (container) {
 
             // Robust Auto-Scaling
             const maxDim = Math.max(size.x, size.y, size.z);
-            let scaleFactor = 3.5 / maxDim;
+            let scaleFactor = 7.0 / maxDim;
 
             // Safety check for bad bounding box
             if (!isFinite(scaleFactor) || scaleFactor === 0) {
@@ -77,8 +77,8 @@ if (container) {
             model.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
             // Positioning for Left Column
-            model.position.x = 0;
-            model.position.y = -0.3; // Slightly lower than center
+            model.position.x = 1.0; // Moved Right
+            model.position.y = -3.0; // Moved down 30% more to fix overlap
 
             scene.add(model);
             console.log("Jersey Loaded & Added. Scale:", scaleFactor);
