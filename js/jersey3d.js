@@ -58,6 +58,28 @@ if (container) {
             const size = box.getSize(new THREE.Vector3());
             const center = box.getCenter(new THREE.Vector3());
 
+            // Zero centering
+            model.position.x += (model.position.x - center.x);
+            model.position.y += (model.position.y - center.y);
+            model.position.z += (model.position.z - center.z);
+
+            // Scale Adjustment - Side Layout
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const scaleFactor = 3.2 / maxDim;
+            model.scale.set(scaleFactor, scaleFactor, scaleFactor);
+
+            // Position Adjustment - Centered in Left 50%
+            model.position.x = 0;
+            model.position.y = -0.5;
+
+            scene.add(model);
+            console.log("Jersey Loaded Successfully");
+        },
+        (xhr) => {
+            // progress
+        },
+        (error) => {
+            console.error('An error occurred:', error);
             // Error Message
             const errorDiv = document.createElement('div');
             errorDiv.style.position = 'absolute';
@@ -79,7 +101,6 @@ if (container) {
                     3. A black window will open. Leave it open.<br>
                     4. Go to <a href="http://localhost:8000" style="color: cyan;">http://localhost:8000</a>
                 </div>
-                <p style="font-size: 0.9em; opacity: 0.8;">(I have verified you have Python installed, so this will work!)</p>
             `;
             container.appendChild(errorDiv);
         }
