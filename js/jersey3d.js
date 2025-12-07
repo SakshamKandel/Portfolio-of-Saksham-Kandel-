@@ -59,21 +59,40 @@ if (container) {
             const center = box.getCenter(new THREE.Vector3());
 
             // Zero centering
-            (error) => {
-                console.error('An error occurred:', error);
+            model.position.x += (model.position.x - center.x);
+            model.position.y += (model.position.y - center.y);
+            model.position.z += (model.position.z - center.z);
 
-                // Error Message
-                const errorDiv = document.createElement('div');
-                errorDiv.style.position = 'absolute';
-                errorDiv.style.top = '50%';
-                errorDiv.style.left = '50%';
-                errorDiv.style.transform = 'translate(-50%, -50%)';
-                errorDiv.style.color = 'red';
-                errorDiv.style.textAlign = 'center';
-                errorDiv.style.background = 'rgba(0,0,0,0.8)';
-                errorDiv.style.padding = '20px';
-                errorDiv.style.zIndex = '100';
-                errorDiv.innerHTML = `
+            // Scale Adjustment
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const scaleFactor = 3.5 / maxDim; // Larger scale to fill space better
+            model.scale.set(scaleFactor, scaleFactor, scaleFactor);
+
+            // Position Adjustment
+            model.position.x = 0;
+            model.position.y = -0.4; // Moved UP significantly to reduce gap
+
+            scene.add(model);
+            console.log("Jersey Loaded Correctly");
+        },
+        (xhr) => {
+            // loading progress
+        },
+        (error) => {
+            console.error('An error occurred:', error);
+
+            // Error Message
+            const errorDiv = document.createElement('div');
+            errorDiv.style.position = 'absolute';
+            errorDiv.style.top = '50%';
+            errorDiv.style.left = '50%';
+            errorDiv.style.transform = 'translate(-50%, -50%)';
+            errorDiv.style.color = 'red';
+            errorDiv.style.textAlign = 'center';
+            errorDiv.style.background = 'rgba(0,0,0,0.8)';
+            errorDiv.style.padding = '20px';
+            errorDiv.style.zIndex = '100';
+            errorDiv.innerHTML = `
                 <h3 style="margin-top:0">⚠️ 3D Model Blocked by Browser</h3>
                 <p>Browsers do not allow 3D files to load directly from your computer for security.</p>
                 <div style="background: #333; padding: 10px; margin: 10px 0; border-radius: 5px; text-align: left;">
@@ -85,8 +104,8 @@ if (container) {
                 </div>
                 <p style="font-size: 0.9em; opacity: 0.8;">(I have verified you have Python installed, so this will work!)</p>
             `;
-                container.appendChild(errorDiv);
-            }
+            container.appendChild(errorDiv);
+        }
     );
 
     // 6. Animation
@@ -94,7 +113,7 @@ if (container) {
         requestAnimationFrame(animate);
 
         if (model) {
-            model.rotation.y += 0.003; // Simple spin
+            model.rotation.y += 0.003;
         } else {
             placeholder.rotation.x += 0.05;
         }
