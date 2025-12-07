@@ -51,55 +51,16 @@ if (container) {
         'assets/3d/bk.glb',
         (gltf) => {
             model = gltf.scene;
-            scene.remove(placeholder);
+            requestAnimationFrame(animate);
 
-            // Auto-scale logic
-            const box = new THREE.Box3().setFromObject(model);
-            const size = box.getSize(new THREE.Vector3());
-            const center = box.getCenter(new THREE.Vector3());
-        },
-        (error) => {
-            console.error('An error occurred:', error);
+            if (model) {
+                model.rotation.y += 0.003; // Simple spin
+            } else {
+                placeholder.rotation.x += 0.05;
+            }
 
-            // Error Message
-            const errorDiv = document.createElement('div');
-            errorDiv.style.position = 'absolute';
-            errorDiv.style.top = '50%';
-            errorDiv.style.left = '50%';
-            errorDiv.style.transform = 'translate(-50%, -50%)';
-            errorDiv.style.color = 'red';
-            errorDiv.style.textAlign = 'center';
-            errorDiv.style.background = 'rgba(0,0,0,0.8)';
-            errorDiv.style.padding = '20px';
-            errorDiv.style.zIndex = '100';
-            errorDiv.innerHTML = `
-                <h3 style="margin-top:0">⚠️ 3D Model Blocked by Browser</h3>
-                <p>Browsers do not allow 3D files to load directly from your computer for security.</p>
-                <div style="background: #333; padding: 10px; margin: 10px 0; border-radius: 5px; text-align: left;">
-                    <strong>The Solution:</strong><br>
-                    1. Open the folder <code>Code</code> on your computer.<br>
-                    2. Double-click the file named <strong>start_server.bat</strong>.<br>
-                    3. A black window will open. Leave it open.<br>
-                    4. Go to <a href="http://localhost:8000" style="color: cyan;">http://localhost:8000</a>
-                </div>
-                <p style="font-size: 0.9em; opacity: 0.8;">(I have verified you have Python installed, so this will work!)</p>
-            `;
-            container.appendChild(errorDiv);
+            renderer.render(scene, camera);
         }
-    );
-
-    // 6. Animation
-    function animate() {
-        requestAnimationFrame(animate);
-
-        if (model) {
-            model.rotation.y += 0.003; // Simple spin
-        } else {
-            placeholder.rotation.x += 0.05;
-        }
-
-        renderer.render(scene, camera);
-    }
     animate();
 
     // 7. Resize
