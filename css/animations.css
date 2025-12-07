@@ -1,0 +1,228 @@
+/* Advanced Animations & Effects */
+
+/* Smooth Page Load */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Parallax Effect for Hero */
+.hero-content {
+    animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.hero-image-container {
+    animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+
+/* Hover Effects for Gallery Items */
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.gallery-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(0, 255, 255, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.gallery-item:hover::before {
+    opacity: 1;
+}
+
+.gallery-item img {
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+/* Stagger Animation for Gallery Grid */
+.gallery-item {
+    animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Add stagger delay */
+.gallery-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.gallery-item:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.gallery-item:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.gallery-item:nth-child(4) {
+    animation-delay: 0.25s;
+}
+
+.gallery-item:nth-child(5) {
+    animation-delay: 0.3s;
+}
+
+.gallery-item:nth-child(6) {
+    animation-delay: 0.35s;
+}
+
+.gallery-item:nth-child(7) {
+    animation-delay: 0.4s;
+}
+
+.gallery-item:nth-child(8) {
+    animation-delay: 0.45s;
+}
+
+/* Navbar Glassmorphism Enhancement */
+.navbar {
+    box-shadow: none;
+}
+
+/* Smooth Scroll Behavior */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+}
+
+/* Section Reveal */
+section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Marquee handled in style.css */
+
+/* Logo Float Animation */
+.client-logo {
+    transition: all 0.3s ease;
+}
+
+.client-logo:hover {
+    transform: translateY(-5px);
+    filter: grayscale(0%) brightness(1.2);
+}
+
+/* CTA Button */
+.email-link {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Skills Tag Hover */
+.skills-list span {
+    transition: all 0.3s ease;
+}
+
+.skills-list span:hover {
+    border-color: var(--accent-kings);
+    color: var(--accent-kings);
+    transform: translateY(-2px);
+}
+
+/* Scroll Indicator Pulse */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.scroll-ind i {
+    animation: bounce 2s infinite, pulse 2s infinite;
+}
+
+/* Custom Cursor Effect */
+@media (hover: hover) {
+    .gallery-item {
+        cursor: pointer;
+    }
+}
+
+/* Loading Shimmer */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+#loader .loader-text {
+    background: linear-gradient(90deg, #fff 0%, #FFD700 50%, #fff 100%);
+    background-size: 1000px 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 2s infinite linear;
+}
+
+/* 4K Media Query Enhancements */
+@media (min-width: 2560px) {
+    .hero-title {
+        font-size: 200px;
+    }
+
+    .section-header h2 {
+        font-size: 120px;
+    }
+
+    .about-text h2 {
+        font-size: 80px;
+    }
+
+    footer h2 {
+        font-size: 100px;
+    }
+
+    .gallery-grid {
+        gap: 40px;
+    }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    .gallery-item {
+        animation-delay: 0s !important;
+    }
+}
