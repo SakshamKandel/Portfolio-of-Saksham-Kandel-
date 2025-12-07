@@ -8,9 +8,9 @@ if (container) {
     // 1. Scene
     const scene = new THREE.Scene();
 
-    // 2. Camera - Frame full jersey in bottom space
+    // 2. Camera - Look lower
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.set(0, -0.9, 5.8); // Look lower and back slightly
+    camera.position.set(0, -1.2, 6.0); // Looking much lower
 
     // 3. Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -63,14 +63,14 @@ if (container) {
             model.position.y += (model.position.y - center.y);
             model.position.z += (model.position.z - center.z);
 
-            // Scale Adjustment - Larger to fill space
+            // Scale Adjustment - Large but safe
             const maxDim = Math.max(size.x, size.y, size.z);
-            const scaleFactor = 4.2 / maxDim; // Bigger to utilize space
+            const scaleFactor = 4.0 / maxDim; // Slightly reduced from 4.2 to ensure fit
             model.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
-            // Position Adjustment - Use bottom space
+            // Position Adjustment - Clear title completely
             model.position.x = 0;   // Dead center X
-            model.position.y = -2.0; // Much lower to utilize bottom space
+            model.position.y = -2.5; // Moved down significantly to clear text
 
             scene.add(model);
             console.log("Jersey Loaded Correctly");
