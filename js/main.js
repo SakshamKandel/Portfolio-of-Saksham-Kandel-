@@ -67,10 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Helper to Create Gallery Items
     function createGalleryItem(filename, folder) {
-        // Encode URI component to handle spaces in filenames
-        const safeFilename = encodeURIComponent(filename);
+        // Use raw filename, let browser handle encoding to avoid double-encoding issues
         const folderPath = folder === 'kings' ? 'Biratnagar Kings' : 'Karnali Yaks';
-        const src = `assets/${folderPath}/${safeFilename}`;
+        const src = `assets/${folderPath}/${filename}`;
 
         const div = document.createElement('div');
         div.className = 'gallery-item';
@@ -115,28 +114,36 @@ document.addEventListener('DOMContentLoaded', () => {
     populateLogos(document.getElementById('client-logos-4'));
 
     console.log("Galleries populated.");
-});
 
-// Intersection Observer for scroll animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: "0px 0px -50px 0px"
-};
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px"
+    };
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            entry.target.style.opacity = 1;
-            entry.target.style.transform = 'translateY(0)';
-            observer.unobserve(entry.target); // Only animate once
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                entry.target.style.opacity = 1;
+                entry.target.style.transform = 'translateY(0)';
+                observer.unobserve(entry.target); // Only animate once
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('section, .gallery-item').forEach(section => {
+        // Only apply initial hidden state if NOT on mobile (handled by CSS, but good to be safe)
+        if (window.innerWidth > 768) {
+            section.style.opacity = 0;
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)'; // Smooth ease
+            observer.observe(section);
+        } else {
+            // Ensure visible on mobile
+            section.style.opacity = 1;
+            section.style.transform = 'translateY(0)';
         }
     });
-}, observerOptions);
 
-document.querySelectorAll('section, .gallery-item').forEach(section => {
-    section.style.opacity = 0;
-    section.style.transform = 'translateY(30px)';
-    section.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)'; // Smooth ease
-    observer.observe(section);
 });

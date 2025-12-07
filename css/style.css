@@ -613,6 +613,13 @@ footer h2 {
     .work-section {
         padding: 60px var(--spacing-container);
         min-height: auto;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .gallery-item {
+        opacity: 1 !important;
+        transform: none !important;
     }
 
     .section-header {
