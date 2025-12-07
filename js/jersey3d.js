@@ -13,7 +13,7 @@ if (container) {
 
     // 2. Camera - Neutral Eye Level
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.set(0, 0, 8.5); // Moved back to fit the jersey better
+    camera.position.set(0, 0, 10.0); // Moved back further to fit large jersey
 
     // 3. Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
