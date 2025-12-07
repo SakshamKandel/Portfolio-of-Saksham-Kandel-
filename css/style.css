@@ -136,7 +136,7 @@ p {
 
 .scroll-ind {
     position: absolute;
-    bottom: 60px;
+    bottom: 30px;
     left: var(--spacing-container);
     display: flex;
     align-items: center;
@@ -449,39 +449,232 @@ footer h2 {
 }
 
 /* Media Queries */
-@media (max-width: 768px) {
-    .navbar {
-        padding: 20px;
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .hero-title {
+        font-size: 10vw;
     }
 
-    .hero-title {
-        font-size: 12vw;
+    .section-header h2 {
+        font-size: 3rem;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    :root {
+        --spacing-container: 5vw;
+    }
+
+    .navbar {
+        padding: 15px 20px;
+    }
+
+    .nav-links a {
+        font-size: 0.8rem;
+        margin-left: 15px;
     }
 
     .hero {
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         height: auto;
-        padding-top: 100px;
-        padding-bottom: 60px;
+        min-height: 100vh;
+        padding-top: 80px;
+        padding-bottom: 40px;
     }
 
     .hero-content {
         max-width: 100%;
+        z-index: 2;
+    }
+
+    .hero-title {
+        font-size: 14vw;
+        line-height: 0.95;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+        margin-bottom: 30px;
     }
 
     .hero-image-container {
         position: relative;
         width: 100%;
         height: 50vh;
-        margin-top: 40px;
+        margin-top: 30px;
+        z-index: 1;
+    }
+
+    .hero-img {
+        mask-image: linear-gradient(to top, transparent 0%, black 30%);
+        -webkit-mask-image: linear-gradient(to top, transparent 0%, black 30%);
+    }
+
+    .scroll-ind {
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Marquee Mobile */
+    .marquee-container {
+        padding: 35px 0;
+        transform: rotate(-3deg) scale(1.15);
+        margin: -15px 0;
+    }
+
+    .marquee-content {
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+        padding-right: 25px;
+    }
+
+    /* Work Sections Mobile */
+    .work-section {
+        padding: 60px var(--spacing-container);
+        min-height: auto;
+    }
+
+    .section-header {
+        margin-bottom: 40px;
+    }
+
+    .section-header h2 {
+        font-size: 2.5rem;
+    }
+
+    .section-header p {
+        font-size: 1rem;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .gallery-item {
+        border-radius: 3px;
+    }
+
+    /* Logos Mobile */
+    .logos-section {
+        padding: 50px 0;
+    }
+
+    .logos-section h3 {
+        font-size: 0.85rem;
+        margin-bottom: 30px;
+    }
+
+    .client-logo {
+        height: 60px;
+    }
+
+    .logo-grid {
+        gap: 40px;
+        padding: 0 20px;
+    }
+
+    /* About Mobile */
+    .about-section {
+        padding: 60px var(--spacing-container);
     }
 
     .about-container {
         grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .about-text h2 {
+        font-size: 2rem;
+    }
+
+    .about-text p {
+        font-size: 0.95rem;
+    }
+
+    .skills-list {
+        gap: 8px;
+    }
+
+    .skills-list span {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .experience-list h3 {
+        font-size: 1.2rem;
+    }
+
+    .job-item {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .job-item .year {
+        min-width: auto;
+    }
+
+    /* Footer Mobile */
+    footer {
+        padding: 80px var(--spacing-container) 40px;
     }
 
     footer h2 {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+    }
+
+    .email-link {
+        font-size: 1rem;
+        padding: 14px 35px;
+    }
+
+    .socials {
+        gap: 25px;
+        margin-top: 35px;
+    }
+
+    .socials a {
+        font-size: 0.85rem;
+    }
+
+    .copyright {
+        margin-top: 50px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 16vw;
+    }
+
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .section-header h2 {
+        font-size: 2rem;
+    }
+
+    footer h2 {
+        font-size: 1.8rem;
+    }
+
+    .client-logo {
+        height: 50px;
+    }
+
+    .logo-grid {
+        gap: 30px;
     }
 }
