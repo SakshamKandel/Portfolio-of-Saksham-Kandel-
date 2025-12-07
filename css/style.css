@@ -141,17 +141,9 @@ p {
 }
 
 #jersey-3d-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 1;
-    /* Behind text (text is usually z-index 2+) */
-    pointer-events: none;
-    /* Let clicks pass through to links/select text */
-    /* Enhance blend with background */
-    mix-blend-mode: lighten;
+    width: 100%;
+    height: 100%;
+    /* No fixed pos, lives inside the section */
 }
 
 .scroll-ind {

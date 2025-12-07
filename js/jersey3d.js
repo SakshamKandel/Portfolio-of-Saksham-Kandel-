@@ -62,13 +62,16 @@ if (container) {
             const scale = 3.5 / maxDim; // Adjust 3.5 for size preference
             model.scale.set(scale, scale, scale);
 
-            // Initial Position for visual balance (shift slightly right like the original image)
-            if (window.innerWidth > 768) {
-                model.position.x = 1.5; // Offset right on desktop
-            } else {
-                model.position.x = 0;   // Center on mobile
-                model.position.y = -0.5; // Lower slightly
-            }
+            // Initial Position - Centered since it's in its own section now
+            model.position.x = 0;
+            model.position.y = -0.5;
+
+            // if (window.innerWidth > 768) {
+            //      model.position.x = 1.5; // Offset right on desktop
+            // } else {
+            //      model.position.x = 0;   // Center on mobile
+            //      model.position.y = -0.5; // Lower slightly
+            // }
 
             scene.add(model);
             console.log("3D Model Loaded!");
@@ -117,13 +120,8 @@ if (container) {
         renderer.setSize(window.innerWidth, window.innerHeight);
 
         if (model) {
-            if (window.innerWidth > 768) {
-                model.position.x = 1.5;
-                model.position.y = 0;
-            } else {
-                model.position.x = 0;
-                model.position.y = -0.5;
-            }
+            model.position.x = 0;
+            model.position.y = -0.5;
         }
     });
 }
