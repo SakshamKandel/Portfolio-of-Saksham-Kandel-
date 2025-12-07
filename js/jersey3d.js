@@ -10,7 +10,7 @@ if (container) {
 
     // 2. Camera - Pulled back for better full view
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.set(0, 0, 7); // Zoomed out for full fit
+    camera.position.set(0, 0, 6); // Adjusted for vertical centering
 
     // 3. Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -65,12 +65,12 @@ if (container) {
 
             // Scale Adjustment - LARGER
             const maxDim = Math.max(size.x, size.y, size.z);
-            const scaleFactor = 4.5 / maxDim; // Much larger (was 3.0)
+            const scaleFactor = 4.0 / maxDim; // Slightly reduced for fit
             model.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
-            // Position Adjustment - Closer to title
+            // Position Adjustment - Center vertically
             model.position.x = 0;   // Dead center X
-            model.position.y = 0.2; // Move UP (was -0.8)
+            model.position.y = -0.5; // Move DOWN to center in viewport
 
             scene.add(model);
             console.log("Jersey Loaded Correctly");
