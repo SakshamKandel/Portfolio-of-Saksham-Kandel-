@@ -79,11 +79,24 @@ if (container) {
         },
         (error) => {
             console.error('An error occurred:', error);
-            // Add a red error cube if it fails
-            const errorGeo = new THREE.BoxGeometry(1, 1, 1);
-            const errorMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-            const errorMesh = new THREE.Mesh(errorGeo, errorMat);
-            scene.add(errorMesh);
+
+            // Show error on screen so user knows what to do
+            const errorDiv = document.createElement('div');
+            errorDiv.style.position = 'absolute';
+            errorDiv.style.top = '50%';
+            errorDiv.style.left = '50%';
+            errorDiv.style.transform = 'translate(-50%, -50%)';
+            errorDiv.style.color = 'red';
+            errorDiv.style.textAlign = 'center';
+            errorDiv.style.background = 'rgba(0,0,0,0.8)';
+            errorDiv.style.padding = '20px';
+            errorDiv.style.zIndex = '100';
+            errorDiv.innerHTML = `
+                <h3>3D Model Failed to Load</h3>
+                <p>This is likely a browser security (CORS) issue.</p>
+                <p style="color: white; margin-top: 10px;">👉 Please run <b>start_server.bat</b> in your folder and open <b>localhost:8000</b></p>
+            `;
+            container.appendChild(errorDiv);
         }
     );
 
