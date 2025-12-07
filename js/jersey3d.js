@@ -77,9 +77,6 @@ if (container) {
 
             scene.add(model);
             console.log("Jersey Final Fix");
-
-            scene.add(model);
-            console.log("Jersey Loaded Correctly");
         },
         (xhr) => {
             // loading progress
