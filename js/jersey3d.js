@@ -51,16 +51,89 @@ if (container) {
         'assets/3d/bk.glb',
         (gltf) => {
             model = gltf.scene;
-            requestAnimationFrame(animate);
+            scene.remove(placeholder);
 
-            if (model) {
-                model.rotation.y += 0.003; // Simple spin
+            // Auto-scale logic
+            const box = new THREE.Box3().setFromObject(model);
+            const size = box.getSize(new THREE.Vector3());
+            const center = box.getCenter(new THREE.Vector3());
+
+            // Zero centering
+            model.position.x += (model.position.x - center.x);
+            model.position.y += (model.position.y - center.y);
+            model.position.z += (model.position.z - center.z);
+
+            // Scale Adjustment
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const scaleFactor = 4.2 / maxDim; // HUGE scale
+            model.scale.set(scaleFactor, scaleFactor, scaleFactor);
+
+            // Position Adjustment
+            model.position.x = 0;
+            model.position.y = -0.6; // Moved up slightly from -0.8
+
+            scene.add(model);
+            console.log("Jersey Loaded Correctly");
+        },
+        (xhr) => {
+            // loading progress
+        },
+        (error) => {
+            console.error('An error occurred:', error);
+
+            // Smarter Error Handling
+            const isFileProtocol = window.location.protocol === 'file:';
+
+            const errorDiv = document.createElement('div');
+            errorDiv.style.position = 'absolute';
+            errorDiv.style.top = '50%';
+            errorDiv.style.left = '50%';
+            errorDiv.style.transform = 'translate(-50%, -50%)';
+            errorDiv.style.color = 'red';
+            errorDiv.style.textAlign = 'center';
+            errorDiv.style.background = 'rgba(0,0,0,0.9)';
+            errorDiv.style.padding = '30px';
+            errorDiv.style.borderRadius = '10px';
+            errorDiv.style.zIndex = '100';
+            errorDiv.style.maxWidth = '80%';
+
+            if (isFileProtocol) {
+                // User opened index.html directly
+                errorDiv.innerHTML = `
+                    <h2 style="margin-top:0; color: #ff4444;">⚠️ SETUP REQUIRED</h2>
+                    <p style="color: white; font-size: 1.1em;">You are strictly <b>NOT</b> allowed to open this file directly.</p>
+                    <div style="background: #222; padding: 15px; margin: 15px 0; border: 1px solid #444; text-align: left;">
+                        <strong style="color: yellow;">THE FIX:</strong><br>
+                        1. Go to your folder.<br>
+                        2. Double-click <b>start_server.bat</b>.<br>
+                        3. Go to <a href="http://localhost:8000" style="color: cyan;">http://localhost:8000</a>
+                    </div>
+                `;
             } else {
-                placeholder.rotation.x += 0.05;
+                // User is on server but file failed
+                errorDiv.innerHTML = `
+                    <h2 style="margin-top:0; color: orange;">⚠️ LOADING ERROR</h2>
+                    <p style="color: white;">The 3D Model could not be found.</p>
+                    <p style="font-family: monospace; color: #888;">${error.message || 'Unknown Error'}</p>
+                `;
             }
 
-            renderer.render(scene, camera);
+            container.appendChild(errorDiv);
         }
+    );
+
+    // 6. Animation
+    function animate() {
+        requestAnimationFrame(animate);
+
+        if (model) {
+            model.rotation.y += 0.003; // Simple spin
+        } else {
+            placeholder.rotation.x += 0.05;
+        }
+
+        renderer.render(scene, camera);
+    }
     animate();
 
     // 7. Resize
