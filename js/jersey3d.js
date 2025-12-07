@@ -8,9 +8,9 @@ if (container) {
     // 1. Scene
     const scene = new THREE.Scene();
 
-    // 2. Camera - Look lower
+    // 2. Camera - Neutral Eye Level
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.set(0, -1.2, 6.0); // Looking much lower
+    camera.position.set(0, 0, 6.5); // Back to neutral Y, zoomed out slightly to see bottom
 
     // 3. Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -63,14 +63,20 @@ if (container) {
             model.position.y += (model.position.y - center.y);
             model.position.z += (model.position.z - center.z);
 
-            // Scale Adjustment - Large but safe
+            // Scale Adjustment - Maximize size
             const maxDim = Math.max(size.x, size.y, size.z);
-            const scaleFactor = 4.0 / maxDim; // Slightly reduced from 4.2 to ensure fit
+            const scaleFactor = 4.5 / maxDim; // Larger size
             model.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
-            // Position Adjustment - Clear title completely
-            model.position.x = 0;   // Dead center X
-            model.position.y = -2.5; // Moved down significantly to clear text
+            // Position Adjustment - Force to bottom area
+            model.position.x = 0;
+            model.position.y = -2.0; // Push down (since camera is at 0)
+
+            // Ensure proper rotation pivot
+            // model.rotation.y = 0; 
+
+            scene.add(model);
+            console.log("Jersey Final Fix");
 
             scene.add(model);
             console.log("Jersey Loaded Correctly");
