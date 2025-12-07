@@ -110,19 +110,15 @@
     </div>
 
     <!-- 3D Jersey Showcase Section -->
-    <section id="jersey-showcase"
-        style="height: 70vh; position: relative; background: #050505; display: flex; align-items: center; overflow: hidden;">
+    <section id="jersey-showcase" class="jersey-section">
 
         <!-- Faded Graph Background (Minimalist) -->
-        <div
-            style="position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 50px 50px; opacity: 0.5;">
-        </div>
+        <div class="jersey-bg-overlay"></div>
 
         <!-- Left: 3D Jersey Container -->
-        <div id="jersey-3d-container" style="width: 50%; height: 100%; position: relative; z-index: 2;">
+        <div id="jersey-3d-container" class="jersey-3d-wrapper">
             <!-- Default Content: Shows if JS fails (CORS Error) -->
-            <div
-                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 80%;">
+            <div class="jersey-error-msg">
                 <h3 style="color: #ff4444; margin-bottom: 10px;">⚠️ 3D Area Not Loading</h3>
                 <p style="font-size: 0.9rem; color: #888;">This is normal when opening the file directly.</p>
                 <div
@@ -136,14 +132,12 @@
         </div>
 
         <!-- Right: Text Content -->
-        <div
-            style="width: 50%; padding-left: 20px; padding-right: 5%; z-index: 2; display: flex; flex-direction: column; justify-content: center;">
-            <h2
-                style="font-size: 3.5vw; text-transform: uppercase; letter-spacing: 0.05em; margin: 0; line-height: 1.1;">
+        <div class="jersey-text-wrapper">
+            <h2 class="jersey-title">
                 Official<br>
                 <span style="color: var(--accent-kings);">Kit Design</span>
             </h2>
-            <p style="margin-top: 20px; color: #888; font-size: 0.95rem; max-width: 80%;">
+            <p class="jersey-desc">
                 Designed for peak performance and visual dominance. The new Kings kit embodies the spirit of victory.
             </p>
         </div>
