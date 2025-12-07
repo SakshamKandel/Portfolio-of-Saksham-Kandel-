@@ -63,14 +63,14 @@ if (container) {
             model.position.y += (model.position.y - center.y);
             model.position.z += (model.position.z - center.z);
 
-            // Scale Adjustment
+            // Scale Adjustment - LARGER
             const maxDim = Math.max(size.x, size.y, size.z);
-            const scaleFactor = 3.5 / maxDim; // Larger scale to fill space better
+            const scaleFactor = 4.5 / maxDim; // Much larger (was 3.0)
             model.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
-            // Position Adjustment
-            model.position.x = 0;
-            model.position.y = -0.4; // Moved UP significantly to reduce gap
+            // Position Adjustment - Closer to title
+            model.position.x = 0;   // Dead center X
+            model.position.y = 0.2; // Move UP (was -0.8)
 
             scene.add(model);
             console.log("Jersey Loaded Correctly");
@@ -113,7 +113,7 @@ if (container) {
         requestAnimationFrame(animate);
 
         if (model) {
-            model.rotation.y += 0.003;
+            model.rotation.y += 0.003; // Simple spin
         } else {
             placeholder.rotation.x += 0.05;
         }
