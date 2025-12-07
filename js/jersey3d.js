@@ -6,15 +6,14 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 const container = document.getElementById('jersey-3d-container');
 
 if (container) {
-    // Clear the "Run Server" message since JS is running
     container.innerHTML = '';
 
     // 1. Scene
     const scene = new THREE.Scene();
 
-    // 2. Camera - Neutral Eye Level
+    // 2. Camera
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.set(0, 0, 10.0); // Moved back for large scale
+    camera.position.set(0, 0, 10.0);
 
     // 3. Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -22,37 +21,38 @@ if (container) {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    // 4. Controls (Manual Rotation)
+    // 4. Group for Pivoting
+    // We add the model here, but we center the model relative to this group.
+    // We move the GROUP for layout, so rotating the group will spin in place.
+    const jerseyGroup = new THREE.Group();
+    scene.add(jerseyGroup);
+
+    // 5. Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.enableZoom = false; // Disable zoom to keep layout stable
-    controls.enablePan = false;  // Disable pan to keep centered
-    controls.autoRotate = true;  // Keep auto-rotation
+    controls.enableZoom = false;
+    controls.enablePan = false;
+    controls.autoRotate = true;
     controls.autoRotateSpeed = 2.0;
 
-    // 5. Lighting
+    // 6. Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 3);
     scene.add(ambientLight);
-
     const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 3);
     hemiLight.position.set(0, 20, 0);
     scene.add(hemiLight);
-
     const dirLight = new THREE.DirectionalLight(0xffffff, 4);
     dirLight.position.set(2, 2, 5);
     scene.add(dirLight);
-
-    // Rim lights
     const purpleLight = new THREE.PointLight(0xaa00ff, 5);
     purpleLight.position.set(-5, 0, -5);
     scene.add(purpleLight);
 
-    // 6. Loading Manager & Loader
+    // 7. Loader
     const loadingManager = new THREE.LoadingManager();
     const loader = new GLTFLoader(loadingManager);
 
-    // Placeholder
     const geo = new THREE.BoxGeometry(0.01, 0.01, 0.01);
     const mat = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
     const placeholder = new THREE.Mesh(geo, mat);
@@ -66,85 +66,85 @@ if (container) {
             model = gltf.scene;
             scene.remove(placeholder);
 
-            // Calculate Bounding Box
+            // Correct Centering inside Group
             const box = new THREE.Box3().setFromObject(model);
-            const size = box.getSize(new THREE.Vector3());
             const center = box.getCenter(new THREE.Vector3());
 
-            // Center Model at Origin
-            model.position.x += (model.position.x - center.x);
-            model.position.y += (model.position.y - center.y);
-            model.position.z += (model.position.z - center.z);
+            // Move model so its center is at (0,0,0) of the Group
+            // This fixes the "rotating from sleeves" issue
+            model.position.sub(center);
 
-            scene.add(model);
+            jerseyGroup.add(model);
 
-            // Apply responsive Layout immediately
             updateModelResponsiveState();
         },
-        (xhr) => {
-            // progress
-        },
+        undefined,
         (error) => {
-            console.error('An error occurred:', error);
-            // Error Message (fallback)
+            console.error(error);
             const errorDiv = document.createElement('div');
-            // ... (keep existing error handling if needed, but HTML handles it mostly now)
+            // Check if styles exist, otherwise inline defaults
+            errorDiv.style.position = 'absolute';
+            errorDiv.style.top = '50%';
+            errorDiv.style.left = '50%';
+            errorDiv.style.transform = 'translate(-50%, -50%)';
+            errorDiv.innerHTML = `<h3 style="color:red">3D Error</h3>`;
+            container.appendChild(errorDiv);
         }
     );
 
-    // 7. Resize & Responsive Logic
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+
+        // No manual rotation of model needed if using OrbitControls autoRotate,
+        // BUT controls rotates the camera.
+        // If we want the object to spin in place, we can rotate the group.
+        // If we use controls.autoRotate, the camera orbits the target.
+
+        if (!model) placeholder.rotation.x += 0.05;
+        renderer.render(scene, camera);
+    }
+    animate();
+
     function updateModelResponsiveState() {
         if (!model) return;
 
         const isMobile = window.innerWidth < 768;
 
-        // Recalculate generic scale base
-        const box = new THREE.Box3().setFromObject(model);
+        // Use initial box size for scaling calc (approximate is fine for rel scale)
+        const box = new THREE.Box3().setFromObject(jerseyGroup);
+        // Note: since we centered model, box center should be near 0,0,0 relative to group
+        // But we want size.
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
 
         if (isMobile) {
-            // Mobile: Larger scale for visibility, centered
-            // Previously 3.5, increasing to 5.0 for better mobile impact
+            // Mobile
             const scaleFactor = 5.0 / maxDim;
-            model.scale.set(scaleFactor, scaleFactor, scaleFactor);
-            model.position.x = 0;
-            model.position.y = -1.0; // Centered but slightly lower
+            jerseyGroup.scale.set(scaleFactor, scaleFactor, scaleFactor);
+            // Center roughly
+            jerseyGroup.position.set(0, -1.0, 0);
+
+            // Controls should target the group position so we orbit the jersey
+            controls.target.set(0, -1.0, 0);
         } else {
-            // Desktop: Massive scale (7.0), offset right and down
+            // Desktop
             const scaleFactor = 7.0 / maxDim;
-            model.scale.set(scaleFactor, scaleFactor, scaleFactor);
-            model.position.x = 1.0;
-            model.position.y = -3.0;
+            jerseyGroup.scale.set(scaleFactor, scaleFactor, scaleFactor);
+            // Move Right
+            jerseyGroup.position.set(1.0, -3.0, 0);
+
+            // Controls should target the group position
+            controls.target.set(1.0, -3.0, 0);
         }
     }
-
-    // 8. Animation
-    function animate() {
-        requestAnimationFrame(animate);
-
-        controls.update(); // Update controls (damping, auto-rotate)
-
-        if (!model) {
-            placeholder.rotation.x += 0.05;
-        }
-
-        renderer.render(scene, camera);
-    }
-    animate();
 
     window.addEventListener('resize', () => {
-        const width = container.clientWidth;
-        const height = container.clientHeight;
-
-        camera.aspect = width / height;
+        camera.aspect = container.clientWidth / container.clientHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize(width, height);
-
-        // Update model specific sizing
+        renderer.setSize(container.clientWidth, container.clientHeight);
         updateModelResponsiveState();
     });
 
     window.updateJerseyResponsive = updateModelResponsiveState;
 }
-
