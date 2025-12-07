@@ -39,23 +39,11 @@ if (container) {
     const loadingManager = new THREE.LoadingManager();
     const loader = new GLTFLoader(loadingManager);
 
-    // Placeholder (Made visible)
-    const geo = new THREE.BoxGeometry(2, 2, 2); // Big cube
-    const mat = new THREE.MeshBasicMaterial({ color: 0x333333, wireframe: true });
+    // Placeholder
+    const geo = new THREE.BoxGeometry(0.01, 0.01, 0.01);
+    const mat = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
     const placeholder = new THREE.Mesh(geo, mat);
     scene.add(placeholder);
-
-    // Initial Loading Text
-    const loadingDiv = document.createElement('div');
-    loadingDiv.id = 'jersey-loading';
-    loadingDiv.style.position = 'absolute';
-    loadingDiv.style.top = '50%';
-    loadingDiv.style.left = '50%';
-    loadingDiv.style.transform = 'translate(-50%, -50%)';
-    loadingDiv.style.color = 'white';
-    loadingDiv.style.fontFamily = 'sans-serif';
-    loadingDiv.innerText = 'LOADING 3D MODEL...';
-    container.appendChild(loadingDiv);
 
     let model;
 
@@ -64,7 +52,6 @@ if (container) {
         (gltf) => {
             model = gltf.scene;
             scene.remove(placeholder);
-            if (document.getElementById('jersey-loading')) document.getElementById('jersey-loading').remove();
 
             // Auto-scale logic
             const box = new THREE.Box3().setFromObject(model);
@@ -72,67 +59,34 @@ if (container) {
             const center = box.getCenter(new THREE.Vector3());
 
             // Zero centering
-            model.position.x += (model.position.x - center.x);
-            model.position.y += (model.position.y - center.y);
-            model.position.z += (model.position.z - center.z);
+            (error) => {
+                console.error('An error occurred:', error);
 
-            // Scale Adjustment
-            const maxDim = Math.max(size.x, size.y, size.z);
-            const scaleFactor = 4.2 / maxDim; // HUGE scale
-            model.scale.set(scaleFactor, scaleFactor, scaleFactor);
-
-            // Position Adjustment
-            model.position.x = 0;
-            model.position.y = -0.6; // Moved up slightly from -0.8
-
-            scene.add(model);
-            console.log("Jersey Loaded Correctly");
-        },
-        (xhr) => {
-            // loading progress
-        },
-        (error) => {
-            console.error('An error occurred:', error);
-
-            // Smarter Error Handling
-            const isFileProtocol = window.location.protocol === 'file:';
-
-            const errorDiv = document.createElement('div');
-            errorDiv.style.position = 'absolute';
-            errorDiv.style.top = '50%';
-            errorDiv.style.left = '50%';
-            errorDiv.style.transform = 'translate(-50%, -50%)';
-            errorDiv.style.color = 'red';
-            errorDiv.style.textAlign = 'center';
-            errorDiv.style.background = 'rgba(0,0,0,0.9)';
-            errorDiv.style.padding = '30px';
-            errorDiv.style.borderRadius = '10px';
-            errorDiv.style.zIndex = '100';
-            errorDiv.style.maxWidth = '80%';
-
-            if (isFileProtocol) {
-                // User opened index.html directly
+                // Error Message
+                const errorDiv = document.createElement('div');
+                errorDiv.style.position = 'absolute';
+                errorDiv.style.top = '50%';
+                errorDiv.style.left = '50%';
+                errorDiv.style.transform = 'translate(-50%, -50%)';
+                errorDiv.style.color = 'red';
+                errorDiv.style.textAlign = 'center';
+                errorDiv.style.background = 'rgba(0,0,0,0.8)';
+                errorDiv.style.padding = '20px';
+                errorDiv.style.zIndex = '100';
                 errorDiv.innerHTML = `
-                    <h2 style="margin-top:0; color: #ff4444;">⚠️ SETUP REQUIRED</h2>
-                    <p style="color: white; font-size: 1.1em;">You are strictly <b>NOT</b> allowed to open this file directly.</p>
-                    <div style="background: #222; padding: 15px; margin: 15px 0; border: 1px solid #444; text-align: left;">
-                        <strong style="color: yellow;">THE FIX:</strong><br>
-                        1. Go to your folder.<br>
-                        2. Double-click <b>start_server.bat</b>.<br>
-                        3. Go to <a href="http://localhost:8000" style="color: cyan;">http://localhost:8000</a>
-                    </div>
-                `;
-            } else {
-                // User is on server but file failed
-                errorDiv.innerHTML = `
-                    <h2 style="margin-top:0; color: orange;">⚠️ LOADING ERROR</h2>
-                    <p style="color: white;">The 3D Model could not be found.</p>
-                    <p style="font-family: monospace; color: #888;">${error.message || 'Unknown Error'}</p>
-                `;
+                <h3 style="margin-top:0">⚠️ 3D Model Blocked by Browser</h3>
+                <p>Browsers do not allow 3D files to load directly from your computer for security.</p>
+                <div style="background: #333; padding: 10px; margin: 10px 0; border-radius: 5px; text-align: left;">
+                    <strong>The Solution:</strong><br>
+                    1. Open the folder <code>Code</code> on your computer.<br>
+                    2. Double-click the file named <strong>start_server.bat</strong>.<br>
+                    3. A black window will open. Leave it open.<br>
+                    4. Go to <a href="http://localhost:8000" style="color: cyan;">http://localhost:8000</a>
+                </div>
+                <p style="font-size: 0.9em; opacity: 0.8;">(I have verified you have Python installed, so this will work!)</p>
+            `;
+                container.appendChild(errorDiv);
             }
-
-            container.appendChild(errorDiv);
-        }
     );
 
     // 6. Animation
