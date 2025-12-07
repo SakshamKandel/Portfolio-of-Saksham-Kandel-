@@ -8,9 +8,9 @@ if (container) {
     // 1. Scene
     const scene = new THREE.Scene();
 
-    // 2. Camera - Pulled back for better full view
+    // 2. Camera - Follow the lowered model
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.set(0, -0.3, 5.5); // Shift camera down slightly and closer
+    camera.position.set(0, -0.8, 5); // Camera looks lower and closer
 
     // 3. Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -63,14 +63,14 @@ if (container) {
             model.position.y += (model.position.y - center.y);
             model.position.z += (model.position.z - center.z);
 
-            // Scale Adjustment - LARGER
+            // Scale Adjustment - LARGER to fill space
             const maxDim = Math.max(size.x, size.y, size.z);
-            const scaleFactor = 3.5 / maxDim; // Balanced size
+            const scaleFactor = 4.0 / maxDim; // Bigger to reduce empty space
             model.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
-            // Position Adjustment - Center vertically
+            // Position Adjustment - Clear title completely
             model.position.x = 0;   // Dead center X
-            model.position.y = -1.2; // Move DOWN significantly to clear title
+            model.position.y = -1.8; // Much lower to avoid title overlap
 
             scene.add(model);
             console.log("Jersey Loaded Correctly");
