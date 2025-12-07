@@ -93,7 +93,7 @@ p {
 }
 
 .hero-content {
-    z-index: 2;
+    z-index: 5;
     position: relative;
     max-width: 60%;
 }
@@ -138,6 +138,20 @@ p {
     position: absolute;
     inset: 0;
     background: linear-gradient(to bottom, transparent, var(--bg-color));
+}
+
+#jersey-3d-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    /* Behind text (text is usually z-index 2+) */
+    pointer-events: none;
+    /* Let clicks pass through to links/select text */
+    /* Enhance blend with background */
+    mix-blend-mode: lighten;
 }
 
 .scroll-ind {

@@ -20,6 +20,16 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
 
+    <!-- Import Map for Three.js -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+
     <style>
         /* Critical CSS for loading state */
         body {
@@ -81,12 +91,15 @@
             <span>Scroll</span>
             <i class="fa-solid fa-arrow-down"></i>
         </div>
-        <div class="hero-image-container">
-            <!-- Will be populated dynamically with My Photo -->
+
+        <!-- 3D Jersey Container -->
+        <div id="jersey-3d-container"></div>
+
+        <!-- removing static image container to replace with 3D, or we can keep it as fallback/background -->
+        <div class="hero-image-container" style="display: none;"> <!-- Temporarily hidden -->
             <div class="hero-img-overlay"></div>
             <img src="assets/My Photo/profile.jpg" alt="Saksham Kandel" class="hero-img"
                 onerror="this.src='https://placehold.co/1080x1920?text=Saksham+Kandel'">
-            <!-- Fallback if specific filename differs, I'll need to check the actual file name in "My Photo" folder -->
         </div>
     </header>
 
@@ -205,6 +218,7 @@
     </footer>
 
     <script src="js/main.js"></script>
+    <script type="module" src="js/jersey3d.js"></script>
 </body>
 
 </html>
