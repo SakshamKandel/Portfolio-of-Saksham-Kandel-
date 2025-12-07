@@ -39,11 +39,23 @@ if (container) {
     const loadingManager = new THREE.LoadingManager();
     const loader = new GLTFLoader(loadingManager);
 
-    // Placeholder
-    const geo = new THREE.BoxGeometry(0.01, 0.01, 0.01);
-    const mat = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+    // Placeholder (Made visible)
+    const geo = new THREE.BoxGeometry(2, 2, 2); // Big cube
+    const mat = new THREE.MeshBasicMaterial({ color: 0x333333, wireframe: true });
     const placeholder = new THREE.Mesh(geo, mat);
     scene.add(placeholder);
+
+    // Initial Loading Text
+    const loadingDiv = document.createElement('div');
+    loadingDiv.id = 'jersey-loading';
+    loadingDiv.style.position = 'absolute';
+    loadingDiv.style.top = '50%';
+    loadingDiv.style.left = '50%';
+    loadingDiv.style.transform = 'translate(-50%, -50%)';
+    loadingDiv.style.color = 'white';
+    loadingDiv.style.fontFamily = 'sans-serif';
+    loadingDiv.innerText = 'LOADING 3D MODEL...';
+    container.appendChild(loadingDiv);
 
     let model;
 
@@ -52,6 +64,7 @@ if (container) {
         (gltf) => {
             model = gltf.scene;
             scene.remove(placeholder);
+            if (document.getElementById('jersey-loading')) document.getElementById('jersey-loading').remove();
 
             // Auto-scale logic
             const box = new THREE.Box3().setFromObject(model);
