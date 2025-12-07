@@ -92,9 +92,16 @@ if (container) {
             errorDiv.style.padding = '20px';
             errorDiv.style.zIndex = '100';
             errorDiv.innerHTML = `
-                <h3>3D Model Failed to Load</h3>
-                <p>This is likely a browser security (CORS) issue.</p>
-                <p style="color: white; margin-top: 10px;">👉 Please run <b>start_server.bat</b> in your folder and open <b>localhost:8000</b></p>
+                <h3 style="margin-top:0">⚠️ 3D Model Blocked by Browser</h3>
+                <p>Browsers do not allow 3D files to load directly from your computer for security.</p>
+                <div style="background: #333; padding: 10px; margin: 10px 0; border-radius: 5px; text-align: left;">
+                    <strong>The Solution:</strong><br>
+                    1. Open the folder <code>Code</code> on your computer.<br>
+                    2. Double-click the file named <strong>start_server.bat</strong>.<br>
+                    3. A black window will open. Leave it open.<br>
+                    4. Go to <a href="http://localhost:8000" style="color: cyan;">http://localhost:8000</a>
+                </div>
+                <p style="font-size: 0.9em; opacity: 0.8;">(I have verified you have Python installed, so this will work!)</p>
             `;
             container.appendChild(errorDiv);
         }
