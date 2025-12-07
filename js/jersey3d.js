@@ -10,7 +10,7 @@ if (container) {
 
     // 2. Camera - Pulled back for better full view
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.set(0, 0, 7); // Increased from 5 to 7 to zoom out
+    camera.position.set(0, 0, 7); // Zoomed out for full fit
 
     // 3. Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -18,7 +18,7 @@ if (container) {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    // 4. Lighting (Overkill to ensure visibility)
+    // 4. Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 3);
     scene.add(ambientLight);
 
@@ -30,7 +30,7 @@ if (container) {
     dirLight.position.set(2, 2, 5);
     scene.add(dirLight);
 
-    // Rim lights for cool effect
+    // Rim lights
     const purpleLight = new THREE.PointLight(0xaa00ff, 5);
     purpleLight.position.set(-5, 0, -5);
     scene.add(purpleLight);
@@ -39,7 +39,7 @@ if (container) {
     const loadingManager = new THREE.LoadingManager();
     const loader = new GLTFLoader(loadingManager);
 
-    // Placeholder until model loads (Invisible box just to test scene works)
+    // Placeholder
     const geo = new THREE.BoxGeometry(0.01, 0.01, 0.01);
     const mat = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
     const placeholder = new THREE.Mesh(geo, mat);
@@ -53,27 +53,46 @@ if (container) {
             model = gltf.scene;
             scene.remove(placeholder);
 
-            // Auto-scale to Fit
+            // Auto-scale logic
             const box = new THREE.Box3().setFromObject(model);
             const size = box.getSize(new THREE.Vector3());
             const center = box.getCenter(new THREE.Vector3());
 
-            // Center model
-            (error) => {
-                console.error('An error occurred:', error);
+            // Zero centering
+            model.position.x += (model.position.x - center.x);
+            model.position.y += (model.position.y - center.y);
+            model.position.z += (model.position.z - center.z);
 
-                // Show error on screen so user knows what to do
-                const errorDiv = document.createElement('div');
-                errorDiv.style.position = 'absolute';
-                errorDiv.style.top = '50%';
-                errorDiv.style.left = '50%';
-                errorDiv.style.transform = 'translate(-50%, -50%)';
-                errorDiv.style.color = 'red';
-                errorDiv.style.textAlign = 'center';
-                errorDiv.style.background = 'rgba(0,0,0,0.8)';
-                errorDiv.style.padding = '20px';
-                errorDiv.style.zIndex = '100';
-                errorDiv.innerHTML = `
+            // Scale Adjustment
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const scaleFactor = 3.0 / maxDim; // Smaller scale (was 3.5)
+            model.scale.set(scaleFactor, scaleFactor, scaleFactor);
+
+            // Position Adjustment
+            model.position.x = 0;   // Dead center X
+            model.position.y = -0.8; // Lower Y to fit text above
+
+            scene.add(model);
+            console.log("Jersey Loaded Correctly");
+        },
+        (xhr) => {
+            // loading progress
+        },
+        (error) => {
+            console.error('An error occurred:', error);
+
+            // Error Message
+            const errorDiv = document.createElement('div');
+            errorDiv.style.position = 'absolute';
+            errorDiv.style.top = '50%';
+            errorDiv.style.left = '50%';
+            errorDiv.style.transform = 'translate(-50%, -50%)';
+            errorDiv.style.color = 'red';
+            errorDiv.style.textAlign = 'center';
+            errorDiv.style.background = 'rgba(0,0,0,0.8)';
+            errorDiv.style.padding = '20px';
+            errorDiv.style.zIndex = '100';
+            errorDiv.innerHTML = `
                 <h3 style="margin-top:0">⚠️ 3D Model Blocked by Browser</h3>
                 <p>Browsers do not allow 3D files to load directly from your computer for security.</p>
                 <div style="background: #333; padding: 10px; margin: 10px 0; border-radius: 5px; text-align: left;">
@@ -85,8 +104,8 @@ if (container) {
                 </div>
                 <p style="font-size: 0.9em; opacity: 0.8;">(I have verified you have Python installed, so this will work!)</p>
             `;
-                container.appendChild(errorDiv);
-            }
+            container.appendChild(errorDiv);
+        }
     );
 
     // 6. Animation
@@ -94,15 +113,9 @@ if (container) {
         requestAnimationFrame(animate);
 
         if (model) {
-            // Idle Spin
-            model.rotation.y += 0.003;
-
-            // Scroll Interaction (optional, keeping it simple for now to ensure visibility first)
-            // const scrollY = window.scrollY;
-            // model.rotation.y = scrollY * 0.002; 
+            model.rotation.y += 0.003; // Simple spin
         } else {
             placeholder.rotation.x += 0.05;
-            placeholder.rotation.y += 0.05;
         }
 
         renderer.render(scene, camera);
