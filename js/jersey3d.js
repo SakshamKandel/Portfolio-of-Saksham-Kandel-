@@ -58,32 +58,6 @@ if (container) {
             const size = box.getSize(new THREE.Vector3());
             const center = box.getCenter(new THREE.Vector3());
 
-            // Zero centering
-            model.position.x += (model.position.x - center.x);
-            model.position.y += (model.position.y - center.y);
-            model.position.z += (model.position.z - center.z);
-
-            // Scale Adjustment - Maximize size
-            const maxDim = Math.max(size.x, size.y, size.z);
-            const scaleFactor = 4.5 / maxDim; // Larger size
-            model.scale.set(scaleFactor, scaleFactor, scaleFactor);
-
-            // Position Adjustment - Force to bottom area
-            model.position.x = 0;
-            model.position.y = -2.0; // Push down (since camera is at 0)
-
-            // Ensure proper rotation pivot
-            // model.rotation.y = 0; 
-
-            scene.add(model);
-            console.log("Jersey Final Fix");
-        },
-        (xhr) => {
-            // loading progress
-        },
-        (error) => {
-            console.error('An error occurred:', error);
-
             // Error Message
             const errorDiv = document.createElement('div');
             errorDiv.style.position = 'absolute';
