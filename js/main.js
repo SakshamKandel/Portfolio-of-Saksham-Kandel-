@@ -24,35 +24,35 @@ document.addEventListener('DOMContentLoaded', () => {
     // Asset Configuration
     const assets = {
         kings: [
-            "Aayo purbeli.png",
+            "Aayo purbeli.jpg",
             "Dhamika  reveal.jpg",
-            "Fuller.png",
-            "Guess Ranjane.png",
-            "Lange Fury.png",
-            "Match day Nep vs Qatar.png",
-            "Player Reveal.png",
-            "Super 6 Nep UAE.png",
-            "Suspense.png",
-            "faf arriving.png",
-            "hongkong Nep vs Afghan.png",
-            "kings never quit.png",
-            "match Day Mani Wi.png",
-            "merchant Blinders.png",
-            "trohpy.png",
-            "tuf of war.png"
+            "Fuller.jpg",
+            "Guess Ranjane.jpg",
+            "Lange Fury.jpg",
+            "Match day Nep vs Qatar.jpg",
+            "Player Reveal.jpg",
+            "Super 6 Nep UAE.jpg",
+            "Suspense.jpg",
+            "faf arriving.jpg",
+            "hongkong Nep vs Afghan.jpg",
+            "kings never quit.jpg",
+            "match Day Mani Wi.jpg",
+            "merchant Blinders.jpg",
+            "trohpy.jpg",
+            "tuf of war.jpg"
         ],
         yaks: [
-            "Guess.png",
-            "Mark Watt 2.png",
-            "Match Day against Kings.png",
-            "Max.png",
-            "Priyank Panchal.png",
-            "Talent Hunt Winner.png",
-            "Zadran.png",
-            "champions.png",
-            "match day against KAG.png",
-            "match day vs sudur paschim.png",
-            "we rise we win.png"
+            "Guess.jpg",
+            "Mark Watt 2.jpg",
+            "Match Day against Kings.jpg",
+            "Max.jpg",
+            "Priyank Panchal.jpg",
+            "Talent Hunt Winner.jpg",
+            "Zadran.jpg",
+            "champions.jpg",
+            "match day against KAG.jpg",
+            "match day vs sudur paschim.jpg",
+            "we rise we win.jpg"
         ],
         logos: [
             "3x3 nepal.png",
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const div = document.createElement('div');
         div.className = 'gallery-item';
-        div.innerHTML = `<img src="${src}" alt="${filename}" loading="lazy">`;
+        div.innerHTML = `<img src="${src}" alt="${filename}" loading="lazy" onerror="this.onerror=null; this.parentElement.style.display='none';">`;
         return div;
     }
 
