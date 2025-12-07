@@ -111,22 +111,20 @@ if (container) {
 
         const isMobile = window.innerWidth < 768;
 
-        // Use initial box size for scaling calc (approximate is fine for rel scale)
-        const box = new THREE.Box3().setFromObject(jerseyGroup);
-        // Note: since we centered model, box center should be near 0,0,0 relative to group
-        // But we want size.
+        // FIX: Calculate box from the MODEL (which scale is 1), not the group (which is scaled)
+        const box = new THREE.Box3().setFromObject(model);
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
 
         if (isMobile) {
             // Mobile
-            const scaleFactor = 5.0 / maxDim;
+            const scaleFactor = 3.5 / maxDim; // Adjusted for mobile view
             jerseyGroup.scale.set(scaleFactor, scaleFactor, scaleFactor);
             // Center roughly
-            jerseyGroup.position.set(0, -1.0, 0);
+            jerseyGroup.position.set(0, -0.5, 0);
 
             // Controls should target the group position so we orbit the jersey
-            controls.target.set(0, -1.0, 0);
+            controls.target.set(0, -0.5, 0);
         } else {
             // Desktop
             const scaleFactor = 7.0 / maxDim;
